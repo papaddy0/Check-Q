@@ -5,25 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paddy - เช็คคิวงานป้าย</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #e8a0bf;
-            --secondary: #be8abf;
-            --bg-soft: #fdf2f8;
-            --pink-wave: rgba(232, 160, 191, 0.2);
+            --primary: #ffc2d1;
+            --secondary: #b392ac;
+            --accent: #ff8fab;
+            --bg-soft: #fff5f7;
+            --white-glass: rgba(255, 255, 255, 0.7);
         }
 
         body, html {
-            height: 100%;
             margin: 0;
             font-family: 'Kanit', sans-serif;
             background: var(--bg-soft);
+            color: #7d5a7a;
             overflow-x: hidden;
-            color: #5c3560;
+            background-image: radial-gradient(#ffe4e9 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        /* --- Background Effects --- */
+        /* --- Animations --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Background Particles --- */
         #particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -31,199 +44,222 @@
             z-index: 1;
         }
 
-        .wave-container {
-            position: fixed;
-            bottom: 0; width: 100%; height: 100px;
-            z-index: 0; pointer-events: none;
-        }
-
-        .wave {
-            position: absolute; bottom: 0; left: 0; width: 200%; height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C58.47,113.1,142.16,104.28,212.72,83.5,249.25,72.74,285.34,63.14,321.39,56.44Z" fill="%23e8a0bf" fill-opacity="0.2"></path></svg>');
-            background-size: 50% 100px;
-            animation: waveMove 10s linear infinite;
-        }
-
-        @keyframes waveMove {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
-        }
-
         /* --- Main UI --- */
         #app {
             position: relative;
             z-index: 10;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
+            padding: 40px 20px;
         }
 
-        .logo-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .logo-area {
-            width: 100%; height: 100%;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
             border-radius: 50%;
-            border: 4px solid white;
-            box-shadow: 0 4px 15px rgba(232, 160, 191, 0.4);
+            border: 5px solid white;
+            box-shadow: 0 8px 20px rgba(255, 143, 171, 0.3);
             overflow: hidden;
             background: white;
-            animation: pulse 3s infinite;
+            animation: float 4s ease-in-out infinite;
         }
 
-        .logo-area img { width: 100%; height: 100%; object-fit: cover; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(232, 160, 191, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 4px 25px rgba(232, 160, 191, 0.6); }
-            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(232, 160, 191, 0.4); }
+        .logo-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .shop-name {
-            text-align: center;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 600;
-            background: linear-gradient(135deg, #e8a0bf, #be8abf);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
+            color: #ff8fab;
+            text-shadow: 2px 2px 0px white;
+            margin: 0;
         }
 
-        /* --- Tabs & Buttons --- */
+        .sub-text {
+            font-size: 14px;
+            color: #b392ac;
+            background: white;
+            display: inline-block;
+            padding: 2px 15px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+
+        /* --- Tabs --- */
         .nav-tabs {
-            display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            background: var(--white-glass);
+            padding: 5px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            margin-bottom: 25px;
         }
 
         .tab-btn {
-            padding: 10px 20px;
+            flex: 1;
+            padding: 10px;
             border-radius: 25px;
             border: none;
-            background: white;
-            color: var(--secondary);
+            background: transparent;
+            color: #b392ac;
             font-family: 'Kanit';
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-weight: 400;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, #e8a0bf, #be8abf);
-            color: white;
-        }
-
-        .queue-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(232, 160, 191, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 11px;
+            background: white;
+            color: #ff8fab;
+            box-shadow: 0 4px 10px rgba(255, 143, 171, 0.2);
             font-weight: 600;
         }
 
-        .status-waiting { background: #fff0f6; color: #d63384; }
+        /* --- Queue Cards --- */
+        .queue-card {
+            background: var(--white-glass);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+        }
+
+        .queue-card:hover {
+            transform: scale(1.02);
+            background: white;
+        }
+
+        .cust-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cust-name {
+            font-weight: 600;
+            font-size: 17px;
+            color: #5c3560;
+        }
+
+        .work-detail {
+            font-size: 13px;
+            color: #b392ac;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05);
+        }
+
+        .status-waiting { background: #fff0f3; color: #ff8fab; }
         .status-working { background: #f3f0ff; color: #845ef7; }
         .status-done { background: #ebfbee; color: #37b24d; }
 
-        /* --- Click Effect --- */
-        .click-pop {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            animation: clickPopAnim 0.8s ease-out forwards;
+        /* --- Buttons & Modal --- */
+        .btn-add {
+            background: #ff8fab;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 20px;
+            width: 100%;
+            font-family: 'Kanit';
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(255, 143, 171, 0.4);
         }
 
-        @keyframes clickPopAnim {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(2) translateY(-20px); opacity: 0; }
-        }
-
-        /* --- Admin Modal --- */
         .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+            position: fixed; inset: 0; background: rgba(255, 194, 209, 0.4);
             display: none; align-items: center; justify-content: center; z-index: 1000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .modal-content {
-            background: white; padding: 25px; border-radius: 30px;
-            width: 90%; max-width: 400px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            background: white; padding: 30px; border-radius: 35px;
+            width: 85%; max-width: 350px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         input, select {
-            width: 100%; padding: 12px; margin: 8px 0;
-            border: 2px solid #f0f0f0; border-radius: 12px;
-            font-family: 'Kanit'; outline: none;
+            width: 100%; padding: 12px; margin: 10px 0;
+            border: 2px solid #fff0f3; border-radius: 15px;
+            font-family: 'Kanit'; outline: none; box-sizing: border-box;
         }
 
-        .btn-submit {
-            width: 100%; padding: 12px; border: none;
-            background: linear-gradient(135deg, #e8a0bf, #be8abf);
-            color: white; border-radius: 12px; font-weight: 600; cursor: pointer;
+        input:focus { border-color: #ff8fab; }
+
+        /* --- Click Effect --- */
+        .click-pop {
+            position: fixed; pointer-events: none; z-index: 9999;
+            animation: clickPopAnim 0.8s ease-out forwards;
+            font-size: 20px;
+        }
+        @keyframes clickPopAnim {
+            0% { transform: scale(0) rotate(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-40px) rotate(20deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
     <div id="particles"></div>
-    <div class="wave-container"><div class="wave"></div></div>
 
     <div id="app">
-        <div class="logo-wrapper">
+        <div class="profile-section">
             <div class="logo-area">
                 <img src="https://i.ibb.co/3ykXWHz/Messenger-creation-07-B09451-EC95-4-BD7-994-C-EB1523158-F98.jpg" alt="Paddy Logo">
             </div>
+            <h1 class="shop-name">Paddy ♡</h1>
+            <span class="sub-text">เช็คคิวงานป้ายสุดคิวท์ ✿</span>
         </div>
-
-        <div class="shop-name">Paddy ♡</div>
-        <p style="text-align: center; color: #9c5e8a; margin-top: -5px;">เช็คคิวงานป้าย✿</p>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('home')">คิวปัจจุบัน</button>
-            <button class="tab-btn" onclick="switchTab('admin')" id="adminTabBtn">จัดการคิว 🔒</button>
+            <button class="tab-btn active" onclick="switchTab('home')">🏠 ดูคิว</button>
+            <button class="tab-btn" onclick="switchTab('admin')" id="adminTabBtn">🛠 จัดการ</button>
         </div>
 
-        <div id="queueList">
-            <div style="text-align: center; padding: 50px; color: #be8abf;">กำลังโหลดข้อมูล...</div>
+        <div id="queueList"></div>
+
+        <div id="adminControls" style="display:none;">
+            <button class="btn-add" onclick="openModal()">+ เพิ่มคิวงานใหม่ ✨</button>
         </div>
     </div>
 
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <h3 style="margin-top: 0; color: #be8abf;">🛠 เพิ่ม/แก้ไขคิว</h3>
-            <input type="text" id="custName" placeholder="ชื่อลูกค้า">
-            <input type="text" id="workType" placeholder="รายละเอียดงาน">
+            <h3 style="color: #ff8fab; margin-bottom: 20px;">🎀 เพิ่มรายการใหม่</h3>
+            <input type="text" id="custName" placeholder="ชื่อเล่นลูกค้า">
+            <input type="text" id="workType" placeholder="เช่น ป้ายชื่อ / โลโก้">
             <select id="workStatus">
                 <option value="รอดำเนินการ">⏳ รอดำเนินการ</option>
                 <option value="กำลังทำ">🎨 กำลังทำ</option>
                 <option value="เสร็จแล้ว">✅ เสร็จแล้ว</option>
             </select>
-            <button class="btn-submit" onclick="saveQueue()">บันทึกข้อมูล</button>
-            <button class="btn-submit" style="background: #ccc; margin-top: 8px;" onclick="closeModal()">ยกเลิก</button>
+            <button class="btn-add" onclick="saveQueue()">บันทึกข้อมูล ♡</button>
+            <button onclick="closeModal()" style="margin-top:15px; background:none; border:none; color:#ccc; cursor:pointer;">ไว้ทีหลังนะ</button>
         </div>
     </div>
 
@@ -231,42 +267,32 @@
         let allData = [];
         let isAdmin = false;
 
-        // --- Data Handling ---
-        // ใช้ Data SDK เพื่อให้ข้อมูลคงอยู่ตลอดไป (Persistence)
-        const dataHandler = {
-            onDataChanged(data) {
-                allData = data;
-                renderQueue();
-            }
-        };
-
-        (async () => {
-            if (window.dataSdk) {
-                await window.dataSdk.init(dataHandler);
-            } else {
-                // Fallback สำหรับทดสอบทั่วไป
-                console.warn("Data SDK not found, using LocalStorage");
-                allData = JSON.parse(localStorage.getItem('paddy_queues') || '[]');
-                renderQueue();
-            }
-        })();
+        // --- Data Logic (LocalStorage) ---
+        function loadData() {
+            allData = JSON.parse(localStorage.getItem('paddy_queues') || '[]');
+            renderQueue();
+        }
 
         function renderQueue() {
             const container = document.getElementById('queueList');
             if (allData.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:40px; color:#be8abf;">ยังไม่มีคิวงานจ้า ♡</div>';
+                container.innerHTML = `
+                    <div style="text-align:center; padding:50px; color:#b392ac;">
+                        <p style="font-size:40px; margin:0;">☁️</p>
+                        <p>ยังไม่มีคิวเลยจ้า ว่างมากกก</p>
+                    </div>`;
                 return;
             }
 
             container.innerHTML = allData.map((item, index) => `
                 <div class="queue-card">
-                    <div>
-                        <div style="font-weight:600; font-size:16px;">#${index + 1} ${item.name}</div>
-                        <div style="font-size:13px; color:#9c5e8a;">✨ ${item.work}</div>
+                    <div class="cust-info">
+                        <span class="cust-name">${index + 1}. คุณ ${item.name} 🎀</span>
+                        <span class="work-detail">✨ ${item.work}</span>
                     </div>
                     <div style="text-align:right">
                         <div class="status-badge ${getStatusClass(item.status)}">${item.status}</div>
-                        ${isAdmin ? `<button onclick="deleteQueue(${index})" style="display:block; margin-top:5px; border:none; background:none; color:#ff8787; cursor:pointer; font-size:11px;">ลบคิว</button>` : ''}
+                        ${isAdmin ? `<button onclick="deleteQueue(${index})" style="display:block; margin-top:8px; border:none; background:none; color:#ff8fab; cursor:pointer; font-size:11px;">ลบออก</button>` : ''}
                     </div>
                 </div>
             `).join('');
@@ -278,92 +304,87 @@
             return 'status-waiting';
         }
 
-        async function saveQueue() {
+        // --- Admin Actions ---
+        function switchTab(tab) {
+            if (tab === 'admin' && !isAdmin) {
+                const pw = prompt('รหัสลับนางฟ้าคืออะไรเอ่ย? 🪄');
+                if (pw === 'paddy1234') {
+                    isAdmin = true;
+                    document.getElementById('adminTabBtn').classList.add('active');
+                    document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+                    document.getElementById('adminControls').style.display = 'block';
+                } else {
+                    alert('รหัสผิดนะจ๊ะตัวเธอ!');
+                }
+            } else if (tab === 'home') {
+                isAdmin = false;
+                document.getElementById('adminTabBtn').classList.remove('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('adminControls').style.display = 'none';
+            }
+            renderQueue();
+        }
+
+        function openModal() { document.getElementById('adminModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function saveQueue() {
             const name = document.getElementById('custName').value;
             const work = document.getElementById('workType').value;
             const status = document.getElementById('workStatus').value;
 
-            if (!name || !work) return alert('กรุณากรอกข้อมูลให้ครบนะจ๊ะ');
+            if (!name || !work) return alert('กรอกชื่อกับงานด้วยน้าา');
 
-            const newItem = { name, work, status, time: new Date().getTime() };
+            allData.push({ name, work, status });
+            localStorage.setItem('paddy_queues', JSON.stringify(allData));
             
-            if (window.dataSdk) {
-                await window.dataSdk.create(newItem);
-            } else {
-                allData.push(newItem);
-                localStorage.setItem('paddy_queues', JSON.stringify(allData));
-                renderQueue();
-            }
-
-            closeModal();
             document.getElementById('custName').value = '';
             document.getElementById('workType').value = '';
+            closeModal();
+            renderQueue();
         }
 
-        async function deleteQueue(index) {
-            if(!confirm('ลบคิวนี้ใช่ไหมคะ?')) return;
-            if (window.dataSdk) {
-                await window.dataSdk.delete(allData[index]);
-            } else {
+        function deleteQueue(index) {
+            if(confirm('จะลบคิวนี้จริงๆ หรอคะ?')) {
                 allData.splice(index, 1);
                 localStorage.setItem('paddy_queues', JSON.stringify(allData));
                 renderQueue();
             }
         }
 
-        // --- UI Logic ---
-        function switchTab(tab) {
-            if (tab === 'admin' && !isAdmin) {
-                const pw = prompt('กรุณาใส่รหัสผ่านแอดมิน:');
-                if (pw === 'paddy1234') { // แก้รหัสผ่านตรงนี้ได้เลยค่ะ
-                    isAdmin = true;
-                    document.getElementById('adminTabBtn').classList.add('active');
-                    document.querySelectorAll('.tab-btn')[0].classList.remove('active');
-                    document.getElementById('adminModal').style.display = 'flex';
-                } else {
-                    alert('รหัสผ่านไม่ถูกต้องนะคะ');
-                }
-            } else if (tab === 'home') {
-                isAdmin = false;
-                document.getElementById('adminTabBtn').classList.remove('active');
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-            }
-            renderQueue();
-        }
-
-        function closeModal() { document.getElementById('adminModal').style.display = 'none'; }
-
-        // --- Visual Effects ---
+        // --- Visuals ---
         function createParticles() {
             const container = document.getElementById('particles');
-            const icons = ['♡', '✿', '❀', '❤'];
+            const icons = ['🌸', '✨', '☁️', '🤍'];
             setInterval(() => {
                 const p = document.createElement('div');
                 p.textContent = icons[Math.floor(Math.random() * icons.length)];
                 p.style.position = 'fixed';
                 p.style.left = Math.random() * 100 + 'vw';
-                p.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                p.style.color = '#e8a0bf';
-                p.style.opacity = Math.random();
+                p.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                p.style.opacity = '0.4';
                 p.style.animation = `floatUp ${Math.random() * 5 + 5}s linear forwards`;
-                p.style.zIndex = '1';
+                p.style.top = '105vh';
                 container.appendChild(p);
-                setTimeout(() => p.remove(), 10000);
-            }, 600);
+                setTimeout(() => p.remove(), 6000);
+            }, 800);
         }
 
-        // Click Effect
         document.addEventListener('click', (e) => {
             const pop = document.createElement('div');
             pop.className = 'click-pop';
-            pop.textContent = '✿';
-            pop.style.left = e.clientX + 'px';
-            pop.style.top = e.clientY + 'px';
-            pop.style.color = '#be8abf';
+            pop.textContent = '🎀';
+            pop.style.left = (e.clientX - 10) + 'px';
+            pop.style.top = (e.clientY - 10) + 'px';
             document.body.appendChild(pop);
             setTimeout(() => pop.remove(), 800);
         });
 
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes floatUp { to { transform: translateY(-120vh) rotate(360deg); } }`;
+        document.head.appendChild(style);
+
+        loadData();
         createParticles();
     </script>
 </body>
